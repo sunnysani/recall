@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playpen+Sans:wght@100;200;300;400;500;600;700;800&display=swap');
+
+:root {
+    font-family: 'Kanit', sans-serif;
+	--color-bg-0: rgb(231, 235, 250);
+	--color-bg-card: rgb(243, 245, 253);
+	--color-theme-1: #8ed73a;
+	--color-theme-2: #5aac86;
+	--color-text: rgba(0, 0, 0, 0.75);
+	--column-width: 42rem;
+	--column-margin-top: 4rem;
+	color: var(--color-text);
+}
+
+body {
+	min-height: 100vh;
+	margin: 0;
+	background-attachment: fixed;
+	background-color: var(--color-bg-1);
+	background-size: 100vw 100vh;
+    background-color: var(--color-bg-0);
+}
+
+card {
+    padding: 1rem 3rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-bg-card);
+}
+
+input,
+button {
+	font-size: inherit;
+	font-family: inherit;
+    background-color: var(--color-theme-1);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.playful {
+    font-family: 'Playpen Sans', cursive;
+}
