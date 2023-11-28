@@ -1,15 +1,28 @@
+<script lang="ts">
+  import MainMenu from "../components/main_menu/MainMenu.svelte";
+  import PassAndPlay from "../components/main_menu/PassAndPlay.svelte";
+  import PlayOnline from "../components/main_menu/PlayOnline.svelte";
+  import HowToPlay from "../components/main_menu/HowToPlay.svelte";
+  import { MainMenuState } from "$lib/enums/MainMenuState";
+
+  let currentState:MainMenuState = MainMenuState.MainMenu;
+
+  $:changeState = function (newState:MainMenuState):void {
+    currentState = newState;
+    console.log(currentState);
+  }
+</script>
+
 <div class="main">
-  <card>
-    <h1 class="playful">Recall Game</h1>
-    <p>This is a test</p>
-    <br />
-    <button>Pass and Play</button>
-    <br />
-    <button>Multiplayer</button>
-    <br />
-    <a href="/how-to-play">How to play</a>
-    <br />
-  </card>
+  {#if currentState == MainMenuState.MainMenu}
+    <MainMenu {changeState} />
+  {:else if currentState == MainMenuState.PassAndPlay}
+    <PassAndPlay {changeState} />
+  {:else if currentState == MainMenuState.PlayOnline}
+    <PlayOnline {changeState} />
+  {:else if currentState == MainMenuState.HowToPlay}
+    <HowToPlay {changeState} />
+  {/if}
 </div>
 
 <style>
@@ -18,20 +31,5 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-  }
-
-  card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    max-width: 50vw;
-  }
-
-  h1 {
-    position: relative;
-    z-index: 1;
-    color: white;
-    text-shadow: 2px 2px 2px var(--color-text);
   }
 </style>
