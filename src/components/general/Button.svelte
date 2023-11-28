@@ -17,7 +17,7 @@
         border: none;
         padding: 0.5rem 1rem;
         border-radius: 15px;
-        transition: 0.1s ease-in-out;
+        transition: 0.04s ease-in;
     }
 
     button:hover {

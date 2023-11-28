@@ -3,29 +3,24 @@
   import PassAndPlay from "../components/main_menu/PassAndPlay.svelte";
   import PlayOnline from "../components/main_menu/PlayOnline.svelte";
   import HowToPlay from "../components/main_menu/HowToPlay.svelte";
+  import { MainMenuState } from "$lib/enums/MainMenuState";
 
-  enum State {
-    MainMenu,
-    PassAndPlay,
-    PlayOnline,
-    HowToPlay,
-  }
+  let currentState:MainMenuState = MainMenuState.MainMenu;
 
-  let currentState:State = State.MainMenu;
-
-  $:changeState = function (newState:State):void {
+  $:changeState = function (newState:MainMenuState):void {
     currentState = newState;
+    console.log(currentState);
   }
 </script>
 
 <div class="main">
-  {#if currentState == State.MainMenu}
+  {#if currentState == MainMenuState.MainMenu}
     <MainMenu {changeState} />
-  {:else if currentState == State.PassAndPlay}
+  {:else if currentState == MainMenuState.PassAndPlay}
     <PassAndPlay {changeState} />
-  {:else if currentState == State.PlayOnline}
+  {:else if currentState == MainMenuState.PlayOnline}
     <PlayOnline {changeState} />
-  {:else if currentState == State.HowToPlay}
+  {:else if currentState == MainMenuState.HowToPlay}
     <HowToPlay {changeState} />
   {/if}
 </div>

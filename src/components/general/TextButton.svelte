@@ -10,7 +10,7 @@
         border: none;
         font-family: 'Playpen Sans', cursive;
         font-weight: 600;
-        transition: 0.1s ease-in-out;
+        transition: 0.04s ease-in;
     }
 
     button:hover {
