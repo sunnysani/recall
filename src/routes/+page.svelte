@@ -9,7 +9,6 @@
 
   $:changeState = function (newState:MainMenuState):void {
     currentState = newState;
-    console.log(currentState);
   }
 </script>
 

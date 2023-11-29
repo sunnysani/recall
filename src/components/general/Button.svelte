@@ -1,16 +1,15 @@
 <script lang="ts">
+    export let minWidth:number = 300;
 	export let variant: string | 'neutral' | 'neutral-secondary' | 'positive' | 'positive-secondary' | 'negative' | 'negative-secondary';
 </script>
 
-<button class="{variant}" on:click on:focus on:submit>
+<button class="{variant}" on:click on:focus on:submit style="{minWidth != null ? `min-width: ${minWidth}px`: ""}">
     <slot />
 </button>
 
 <style>
     button {
         box-shadow: 0 4px 4px 0px rgb(0, 0, 0, 0.25);
-        padding: 0.5em 1em;
-        min-width: 300px;
         font-size: 24px;
         font-family: 'Playpen Sans', cursive;
         font-weight: 600;
