@@ -1,38 +1,45 @@
-# create-svelte
+# Recall
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Reveal paired card in your turn. Recall card you or your enemy Reveal. Play the game at [recall.games](recall.games).
 
-## Creating a project
+## About Game
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Game Architecture (General)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+#### Player
+- name (string)
+- color (enum)
+- point (number)
+- score (number)
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+#### Card
+- id (number)
+- Image (object/string), 
+- revealed (boolean)
 
-## Developing
+### Pass and Play
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+#### Variables
+- Player Count
+- Card Pair Count
+- Mode (Standard or Reveal and Switch)
 
-```bash
-npm run dev
+#### Mechanic
+- Map<number, Card> cardMap : Map/Dictionary of Card with Card id as key and Card object as value
+- number[] cardList : List of numbers that contains the position of cards
+- Player opens 2 cards. It passes selected index of cardList they chooses
+    - If player opens the same card pair, the player gets point and set the card revealed to true and hide the card 
+    - If not, player doesn't get point and card closes
+        - Map.get(number).revealed : if it's revealed, it's hidden in the game's deck
+- When all card has been revealed, game is over. +1 Score for the winner
+- Game restarts
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+### Multiplayer
 
-## Building
+#### Variables
+- Player UID
+- Player Name
 
-To create a production version of your app:
+#### Mechanic
 
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+To be built. Uses socket to connect with server.

@@ -3,7 +3,7 @@
   import PassAndPlay from "../components/main_menu/PassAndPlay.svelte";
   import PlayOnline from "../components/main_menu/PlayOnline.svelte";
   import HowToPlay from "../components/main_menu/HowToPlay.svelte";
-  import { MainMenuState } from "$lib/enums/MainMenuState";
+  import { MainMenuState } from "$lib/common/Common.Enums";
 
   let currentState:MainMenuState = MainMenuState.MainMenu;
 

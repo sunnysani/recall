@@ -1,25 +1,25 @@
 <script lang="ts">
-    import { MainMenuState } from "$lib/enums/MainMenuState";
-    import { PassAndPlayPlayerCount, PassAndPlayMode, PassAndPlayModeEnumToString } from "$lib/enums/PassAndPlayEnums";
-    import { passAndPlayModeCardPairCountState, passAndPlayModeState, passAndPlayPlayerCountState } from "$lib/store/PassAndPlayStore";
+    import { PassAndPlayMode, MainMenuState, PassAndPlayModeEnumToString } from "$lib/common/Common.Enums";
+    import { passAndPlayCardPairCountState, passAndPlayModeState, passAndPlayPlayerCountState } from "$lib/store/PassAndPlayStore";
     import Card from "../general/Card.svelte";
     import Button from "../general/Button.svelte";
     import CounterButton from "../general/CounterButton.svelte";
     import SlideVerticalOption from "../general/SlideVerticalOption.svelte";
 
-    let playerCount: PassAndPlayPlayerCount;
+
+    let playerCount: number;
     passAndPlayPlayerCountState.subscribe(val => {playerCount = val});
-    $:onChangePlayerCount = function (newPlayerCount:PassAndPlayPlayerCount):void {
+    $:onChangePlayerCount = function (newPlayerCount:number):void {
         passAndPlayPlayerCountState.set(newPlayerCount);
     }
 
     let cardPairCount: number;
-    passAndPlayModeCardPairCountState.subscribe(val => {cardPairCount = val});
+    passAndPlayCardPairCountState.subscribe(val => {cardPairCount = val});
     $:onChangeCardPairCount = function (newCardPairCount: number) {
         if (newCardPairCount < 6 || newCardPairCount > 15) {
             return;
         }
-        passAndPlayModeCardPairCountState.set(newCardPairCount);
+        passAndPlayCardPairCountState.set(newCardPairCount);
     }
 
     let mode: PassAndPlayMode;
@@ -36,14 +36,14 @@
     <div class="player-count-selection">
         <h3>Player Count:</h3>
         <div>
-            <span><Button minWidth={50} variant={playerCount===PassAndPlayPlayerCount.TWO ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(PassAndPlayPlayerCount.TWO)}>2P</Button></span>
-            <span><Button minWidth={50} variant={playerCount===PassAndPlayPlayerCount.THREE ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(PassAndPlayPlayerCount.THREE)}>3P</Button></span>
-            <span><Button minWidth={50} variant={playerCount===PassAndPlayPlayerCount.FOUR ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(PassAndPlayPlayerCount.FOUR)}>4P</Button></span>
+            <span><Button minWidth={50} variant={playerCount===2 ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(2)}>2P</Button></span>
+            <span><Button minWidth={50} variant={playerCount===3 ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(3)}>3P</Button></span>
+            <span><Button minWidth={50} variant={playerCount===4 ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(4)}>4P</Button></span>
         </div>
         <br />
         <div>
-            <span><Button minWidth={50} variant={playerCount===PassAndPlayPlayerCount.FIVE ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(PassAndPlayPlayerCount.FIVE)}>5P</Button></span>
-            <span><Button minWidth={50} variant={playerCount===PassAndPlayPlayerCount.SIX ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(PassAndPlayPlayerCount.SIX)}>6P</Button><div></span>
+            <span><Button minWidth={50} variant={playerCount===5 ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(5)}>5P</Button></span>
+            <span><Button minWidth={50} variant={playerCount===6 ? 'neutral' : 'neutral-secondary'} on:click={() => onChangePlayerCount(6)}>6P</Button><div></span>
         </div>
     </div>
     <div class="card-pair-count-selection">
