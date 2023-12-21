@@ -12,7 +12,11 @@ export class Game {
     // List value of the cards that will be randomed to be served in game's deck
     cardList: number[];
     cardMap: Map<number, Card>;
-    
+
+    playerTurn: number;
+    cardIndexGuess1: number;
+    cardIndexGuess2: number;
+
     constructor() {
         passAndPlayPlayerCountState.subscribe(val => {this.playerCount = val});
         passAndPlayCardPairCountState.subscribe(val => {this.cardPairCount = val});
@@ -28,5 +32,28 @@ export class Game {
         }
         this.cardList = ShuffleArray(this.cardList);
         console.log(this.cardList);
+
+        this.playerTurn = 0;
+    }
+
+    openCard(index:number) {
+        console.log(index);
+        if (this.cardIndexGuess1 == null) {
+            this.cardIndexGuess1 = index;
+        } else {
+            if (this.cardIndexGuess1 === index) {
+                return;
+            }
+            this.cardIndexGuess2 = index;
+        }
+    }
+
+    closeCard() {
+        this.cardIndexGuess1 = null;
+        this.cardIndexGuess2 = null;
+    }
+
+    shuffle() {
+        this.cardList = ShuffleArray(this.cardList);
     }
 }
