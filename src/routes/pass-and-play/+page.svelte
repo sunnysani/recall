@@ -3,9 +3,6 @@
     import type { PageData } from "./$types";
 
     export let data: PageData;
-    console.log('-----');
-    $:console.log(data.game.cardList);
-    console.log('====');
 
     function clickTest() {
         console.log('test');
@@ -14,27 +11,28 @@
         cardList = data.game.cardList;
     }
 
-    $: selectCard = (index:number) => {
+    function selectCard(index:number) {
         data.game.openCard(index);
         cardIndexGuess1 = data.game.cardIndexGuess1;
         cardIndexGuess2 = data.game.cardIndexGuess2;
     }
  
-    let game = data.game;
-    let cardList = data.game.cardList;
-    $: cardIndexGuess1 = data.game.cardIndexGuess1;
-    $: cardIndexGuess2 = data.game.cardIndexGuess2;
+    $: game = data.game;
+    $: cardList = data.game.cardList;
+    $: cardIndexGuess1 = game.cardIndexGuess1;
+    $: cardIndexGuess2 = game.cardIndexGuess2;
 </script>
 
 <div class="stage">
     <div class="deck">
         {#each cardList as cardId, index}
-        <GameCard expose={cardIndexGuess1 === index || cardIndexGuess2 === index} on:click={() =>{selectCard(index)}}>{cardId}</GameCard>
+        <div class:hide={false}>
+            <GameCard expose={cardIndexGuess1 === index || cardIndexGuess2 === index} on:click={() =>{selectCard(index)}}>{cardId}</GameCard>
+        </div>
         {/each}
     </div>
     <p>{cardIndexGuess1}</p>
     <p> | </p>
-    <p>{game.cardIndexGuess1}</p>
     <button on:click={clickTest}>Shuffle</button>
 </div>
 
@@ -51,5 +49,9 @@
         height: 100%;
         width: 100%;
         display: flex;
+    }
+
+    .hide {
+        visibility: hidden;
     }
 </style>

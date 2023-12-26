@@ -1,21 +1,20 @@
-
-import { PassAndPlayMode } from "$lib/common/Common.Enums";
+import type { PassAndPlayMode } from "$lib/common/Common.Enums";
 import { Card } from "$lib/models/Card";
 import { passAndPlayCardPairCountState, passAndPlayModeState, passAndPlayPlayerCountState } from "$lib/store/PassAndPlayStore";
 import { ShuffleArray } from '$lib/common/Common.Functions';
 
 export class Game {
-    playerCount: number;
-    cardPairCount: number;
-    mode: PassAndPlayMode;
+    playerCount: number | undefined;
+    cardPairCount: number | undefined;
+    mode: PassAndPlayMode | undefined;
 
     // List value of the cards that will be randomed to be served in game's deck
     cardList: number[];
     cardMap: Map<number, Card>;
 
-    playerTurn: number;
-    cardIndexGuess1: number;
-    cardIndexGuess2: number;
+    playerTurnIndex: number;
+    cardIndexGuess1: number | undefined;
+    cardIndexGuess2: number | undefined;
 
     constructor() {
         passAndPlayPlayerCountState.subscribe(val => {this.playerCount = val});
@@ -24,7 +23,7 @@ export class Game {
 
         this.cardList = [];
         this.cardMap = new Map<number, Card>();
-        for (let i = 1; i <= this.cardPairCount; i++) {
+        for (let i = 1; i <= this.cardPairCount!; i++) {
             let newCardObject: Card = new Card(i, i);
             this.cardMap.set(i, newCardObject);
             this.cardList.push(i);
@@ -33,24 +32,38 @@ export class Game {
         this.cardList = ShuffleArray(this.cardList);
         console.log(this.cardList);
 
-        this.playerTurn = 0;
+        this.playerTurnIndex = 0;
+    }
+
+    determineOpenedCard() {
+        if (this.cardMap.get(this.cardIndexGuess1!) === this.cardMap.get(this.cardIndexGuess1!)) {
+            console.log('yes!');
+        } else {
+            console.log('no!');
+        }
     }
 
     openCard(index:number) {
-        console.log(index);
-        if (this.cardIndexGuess1 == null) {
+        if (this.cardIndexGuess1 === undefined) {
             this.cardIndexGuess1 = index;
-        } else {
+        } else if (this.cardIndexGuess2 !== undefined) {
+            return;
+        }
+        else {
             if (this.cardIndexGuess1 === index) {
                 return;
             }
             this.cardIndexGuess2 = index;
+            
+            setTimeout(() => {
+                this.determineOpenedCard();
+            }, 0); // TODO: Set this to planned UX
         }
     }
 
     closeCard() {
-        this.cardIndexGuess1 = null;
-        this.cardIndexGuess2 = null;
+        this.cardIndexGuess1 = undefined;
+        this.cardIndexGuess2 = undefined;
     }
 
     shuffle() {
