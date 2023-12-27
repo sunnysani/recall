@@ -1,10 +1,11 @@
 import type { PassAndPlayMode } from "$lib/common/Common.Enums";
 import { Card } from "$lib/models/Card";
 import { passAndPlayCardPairCountState, passAndPlayModeState, passAndPlayPlayerCountState } from "$lib/store/PassAndPlayStore";
-import { ShuffleArray } from '$lib/common/Common.Functions';
+import { ShuffleArray, Sleep } from '$lib/common/Common.Functions';
+import { type Players, PlayersStore } from "$lib/store/Players";
 
 export class Game {
-    playerCount: number | undefined;
+    playerCount: number = 2;
     cardPairCount: number | undefined;
     mode: PassAndPlayMode | undefined;
 
@@ -15,11 +16,15 @@ export class Game {
     playerTurnIndex: number;
     cardIndexGuess1: number | undefined;
     cardIndexGuess2: number | undefined;
+    wait: boolean = false;
+
+    players: Players;
 
     constructor() {
         passAndPlayPlayerCountState.subscribe(val => {this.playerCount = val});
         passAndPlayCardPairCountState.subscribe(val => {this.cardPairCount = val});
         passAndPlayModeState.subscribe(val => {this.mode = val});
+        PlayersStore.subscribe(val => {this.players = val});
 
         this.cardList = [];
         this.cardMap = new Map<number, Card>();
@@ -35,30 +40,30 @@ export class Game {
         this.playerTurnIndex = 0;
     }
 
-    determineOpenedCard() {
-        if (this.cardMap.get(this.cardIndexGuess1!) === this.cardMap.get(this.cardIndexGuess1!)) {
+    async determineOpenedCard() {
+        await Sleep(1000);
+        console.log(this.cardMap.get(this.cardList[this.cardIndexGuess1!]));
+        console.log(this.cardMap.get(this.cardList[this.cardIndexGuess2!]));
+        
+        console.log(this.cardMap.get(this.cardList[this.cardIndexGuess1!]) === this.cardMap.get(this.cardList[this.cardIndexGuess2!]));
+        if (this.cardMap.get(this.cardList[this.cardIndexGuess1!]) === this.cardMap.get(this.cardList[this.cardIndexGuess2!])) {
             console.log('yes!');
+            this.cardMap.get(this.cardList[this.cardIndexGuess1!])!.revealed = true;
+            this.players.players[this.playerTurnIndex].point++;
         } else {
             console.log('no!');
+            if (this.playerTurnIndex === this.playerCount - 1) {
+                this.playerTurnIndex = 0;
+            } else {
+                this.playerTurnIndex++;
+            }
         }
+
+        this.closeCard();
     }
 
-    openCard(index:number) {
-        if (this.cardIndexGuess1 === undefined) {
-            this.cardIndexGuess1 = index;
-        } else if (this.cardIndexGuess2 !== undefined) {
-            return;
-        }
-        else {
-            if (this.cardIndexGuess1 === index) {
-                return;
-            }
-            this.cardIndexGuess2 = index;
-            
-            setTimeout(() => {
-                this.determineOpenedCard();
-            }, 0); // TODO: Set this to planned UX
-        }
+    isCardRevealed(index: num) {
+        return this.cardMap.get(this.cardList[index])!.revealed;
     }
 
     closeCard() {

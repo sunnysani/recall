@@ -16,3 +16,5 @@ export function ShuffleArray(array) {
   
     return array;
 }
+
+export const Sleep = (ms) => new Promise(r => setTimeout(r, ms));
